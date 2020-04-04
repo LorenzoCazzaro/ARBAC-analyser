@@ -6,6 +6,6 @@ UA <user0,Admin> <user1,Doctor> <user2,Doctor> <user3,Nurse> <user4,Nurse> <user
 
 CR <Doctor,ThirdParty> <Doctor,ReferredDoctor> <MedicalManager,MedicalTeam> <Manager,Employee> <Manager,MedicalManager> <Manager,Nurse> ;
 
-CA <Admin,Doctor&Patient,target> <Doctor,TRUE,ThirdParty> <Manager,TRUE,Employee> <Manager,TRUE,MedicalManager> <Patient,TRUE,Agent> <Doctor,Doctor,ReferredDoctor> <MedicalManager,Doctor,MedicalTeam> <MedicalManager,Nurse,MedicalTeam> <Manager,-Doctor,Receptionist> <Manager,-Receptionist,Doctor> <Patient,Doctor&-Patient,PrimaryDoctor> <Receptionist,-PrimaryDoctor,Patient> <ThirdParty,Patient,PatientWithTPC> ;
+CA <Admin,PatientWithTPC,target> <Doctor,TRUE,ThirdParty> <Manager,TRUE,Employee> <Manager,TRUE,MedicalManager> <Patient,TRUE,Agent> <Doctor,Doctor,ReferredDoctor> <MedicalManager,Doctor,MedicalTeam> <MedicalManager,Nurse,MedicalTeam> <Manager,-Doctor,Receptionist> <Manager,-Receptionist,Doctor> <Patient,Doctor&-Patient,PrimaryDoctor> <Receptionist,-PrimaryDoctor,Patient> <ThirdParty,Patient,PatientWithTPC> ;
 
 Goal target ;
