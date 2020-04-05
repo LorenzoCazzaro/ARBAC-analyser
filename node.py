@@ -16,7 +16,6 @@ class Node:
         self.roles_to_users_dict = {}
     
         for assignment in self.UR:
-            #print(assignment)
             #if the user isn't in the dictionary, initialize a new entry
             if assignment[0] not in self.users_to_roles_dict.keys():
                 self.users_to_roles_dict[assignment[0]] = [assignment[1]]
@@ -28,10 +27,6 @@ class Node:
                 self.roles_to_users_dict[assignment[1]] = [assignment[0]]
             else:
                 self.roles_to_users_dict[assignment[1]] += [assignment[0]]
-        #print(UR)
-        #print(self.users_to_roles_dict)
-        #print(self.roles_to_users_dict)
-        #print("\n")
 
     #overriding equality operator
     def __eq__(self, other):
@@ -41,36 +36,33 @@ class Node:
     #INPUT set of all the users of the system, rules to apply
     #OUTPUT new nodes of the state space tree corresponding to new user-to-role assignments set
     def apply_CA_rules(self, tot_users, rules):
+        #find the rules that can be applied by exploring the checking if the adm role of the rule is the actual roles assigned in the UR
         rules_appliable = set([(rule if rule[0] in self.roles_to_users_dict.keys() else None) for rule in rules])
         if None in rules_appliable:
             rules_appliable.remove(None)
-        #print(rules_appliable)
         new_nodes = []
+
         for rule in rules_appliable:
-            #print("APPLIED RULE ", rule)
+
             for user in self.users_to_roles_dict:
+                #if the target role of the rule isn't assigned to the user 
+                #and if the user doesn't possess a negative precondition
+                #and if the user possesses all the positive precondition
                 if rule[3] not in self.users_to_roles_dict[user] and len(rule[2].intersection(self.users_to_roles_dict[user])) == 0 and rule[1].issubset(self.users_to_roles_dict[user]):
-                    # print("AAA ", self.UR)
-                    # print("AAA ", Node(self.UR | set([(user, rule[3])])).UR)
-                    # print("\n")
-                    new_nodes += [Node(self.UR | set([(user, rule[3])]))]
-            if len(rule[1]) == 0:
-                for user in set(tot_users) - set(self.users_to_roles_dict.keys()):
-                    #print(user)
-                    # print("BBB ", self.UR)
-                    # print("BBB ", Node(self.UR | set([(user, rule[3])])).UR)
-                    # print("\n")
-                    new_nodes += [Node(self.UR | set([(user, rule[3])]))]
+                    new_nodes += [Node(self.UR | set([(user, rule[3])]))] #add the assignment and create a new node
+            if len(rule[1]) == 0: #if the rule hasn't positive preconditions
+                for user in set(tot_users) - set(self.users_to_roles_dict.keys()): #for every user without role
+                    new_nodes += [Node(self.UR | set([(user, rule[3])]))] #add the assignment and create a new node
         return new_nodes
     
     #apply the CA rules at the current node
     #INPUT set of all the users of the system, rules to apply
     #OUTPUT new nodes of the state space tree corresponding to new user-to-role assignments set
     def apply_CR_rules(self, rules):
+        #find the roles to remove by exploring the roles revoked from rules and the roles in the actual UR
         roles_to_remove = set([(rule[1] if rule[0] in self.roles_to_users_dict.keys() else None) for rule in rules])
         if None in roles_to_remove:
             roles_to_remove.remove(None)
-        #print(roles_to_remove)
 
         new_nodes = []
         for assignment in self.UR:
@@ -82,25 +74,5 @@ class Node:
     def role_is_present(self, role):
         return role in self.roles_to_users_dict.keys()
         
-
-    #return the roles currently assigned by the user-to-role assignment, not used
-    #def roles_assigned(self):
-    #    return self.roles_to_users_dict.keys().copy()
-
-    #return the roles currently assigned by the user-to-role assignment, not used
-    #def user_assigned(self):
-    #    return self.users_to_roles_dict.keys().copy()
-
-    #getter of the roles currently assigned to a user, not used
-    #def __get_role_for_user(self, user):
-    #    if user not in self.users_to_roles_dict.keys():
-    #        return []
-    #    return self.users_to_roles_dict[user]
-
-    #getter of the users currently assigned to a role, not used
-    #def __get_users_for_role(self, role):
-    #    if role not in self.roles_to_users_dict.keys():
-    #        return []
-    #    return self.roles_to_users_dict[role]
     
         

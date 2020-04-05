@@ -19,13 +19,11 @@ from node import *
 #can-revoke rules, goal role
 #OUTPUT: True if the goal is reachable, False otherwise
 def check_reachability(roles, users, UR, CA, CR, target):
-    #maximum_depth = 0
     #start to check if the initial nodes contains a user-to-role assignment with the target role
     nodes_to_check = [Node(UR)]
     nodes_seen = [] #nodes already visited
-    i = 0
     
-    while len(nodes_to_check) != 0:#and i != 1:
+    while len(nodes_to_check) != 0:
         #select next node to check
         node_visited = nodes_to_check.pop(0)
 
@@ -44,24 +42,18 @@ def check_reachability(roles, users, UR, CA, CR, target):
         CA_result_nodes_res = CA_result_nodes.copy()
         for node in CA_result_nodes:
             if node in nodes_seen:
-                #print("A")
                 CA_result_nodes_res.remove(node)
         CA_result_nodes = CA_result_nodes_res
 
         #remove the states already visisted from the list of the new states to visit
         CR_result_nodes_res = CR_result_nodes.copy()
-        for node in CR_result_nodes: #funziona sempre?
+        for node in CR_result_nodes: 
             if node in nodes_seen:
-                #print("B")
                 CR_result_nodes_res.remove(node)
         CR_result_nodes = CR_result_nodes_res
 
         nodes_to_check += CA_result_nodes
         nodes_to_check += CR_result_nodes
-        # for node in nodes_to_check:
-        #     print(node.UR)
-        #     print("\n")
-        i += 1
-        
+                
     return False 
 
