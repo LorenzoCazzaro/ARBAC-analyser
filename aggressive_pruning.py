@@ -6,8 +6,6 @@
 #CA set of 4-tuple -> (ra, Rp, Rn, rt), ra and rt string, Rp and Rn forzenset of roles (strings)
 #CR set of pairs -> (ra, rt), ra and rt strings
 
-
-
 #implementation of backward slicing -> compute an overapproximation of the roles
 #which are relevant to assign the goal of the role reachability problem
 
@@ -62,7 +60,6 @@ def backward_slicing(roles, users, UR, CA, CR, goal):
 
 
 
-
 #implementation of forward slicing -> Compute an over-approximation of the reachable roles
 
 #INPUT: description of the problem: roles, users, user-to-role assignments, can-assign rules,
@@ -91,9 +88,10 @@ def forward_slicing(roles, users, UR, CA, CR, goal):
     #in the positive preconditions or in the target            
     CA_res = CA.copy()
     for rule in CA:
-        if rule[3] not in result_roles_set or not rule[1].issubset(result_roles_set):
-            CA_res.remove(rule)
-        rule[2] &= result_roles_set    
+        CA_res.remove(rule)
+        if rule[3] in result_roles_set and rule[1].issubset(result_roles_set):
+            CA_res.add((rule[0], rule[1], frozenset(set(rule[2]).intersection(result_roles_set)), rule[3]))
+            #filter negative preconditions  
     
     #remove from CR all the rules that mention any role not in S*
     CR_res = CR.copy()

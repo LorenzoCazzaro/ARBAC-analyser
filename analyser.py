@@ -8,7 +8,7 @@ from node import *
 #CA set of 4-tuple -> (ra, Rp, Rn, rt), ra and rt string, Rp and Rn forzenset of roles (strings)
 #CR set of pairs -> (ra, rt), ra and rt strings
 
-#The analyser use a breadth first search approach in order to explore all the space state tree
+#The analyser use a breadth first search approach in order to explore all the state space as tree
 #from the root of the tree, the initial user-to-role assignments.
 
 #Every node of the state space tree is a user-to-role assignments set.

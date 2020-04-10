@@ -9,7 +9,8 @@ import os
 #CA set of 4-tuple -> (ra, Rp, Rn, rt), ra and rt string, Rp and Rn forzenset of roles (strings)
 #CR set of pairs -> (ra, rt), ra and rt strings
 
-path = "C:\\Users\loren\Desktop\ARBAC-analyser\Policies\policy8.arbac"
+#put your prefe here
+path = "C:\\Users\loren\Desktop\ARBAC-analyser\Policies\policy3.arbac"
 
 def main():
     #read the problem
@@ -26,7 +27,6 @@ def main():
     #apply pruning
     roles, users, UR, CA, CR, goal = backward_slicing(roles, users, UR, CA, CR, goal)
     #roles, users, UR, CA, CR, goal = forward_slicing(roles, users, UR, CA, CR, goal)
-
 
     print(check_reachability(roles, users, UR, CA, CR, goal))
 
